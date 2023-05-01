@@ -55,6 +55,11 @@ class Spell_Checker:
         return self.lm.evaluate_text(text)
 
     def get_candidates(self, x):
+        """
+
+        :param x: the word we want to find candidates for
+        :return: set of candidates
+        """
         all_chars = 'absdefghijklmnopqrstuvwxyz'
 
         candidates = set()
@@ -95,6 +100,12 @@ class Spell_Checker:
         return candidates
 
     def p_typo(self, error_type, key):
+        """
+
+        :param error_type: type of error
+        :param key: the key in the dict
+        :return: P - probability of the error
+        """
         up = self.error_tables[error_type][key]
         down = 0
         key_for_char = key.replace("#", " ")
@@ -113,6 +124,11 @@ class Spell_Checker:
         return p
 
     def get_candidate_with_p(self, x):
+        """
+
+        :param x:  the word we want to find candidates for
+        :return: set of candidates with P
+        """
         candidates_with_oov = self.get_candidates(x)
         c_with_p = dict()
         c_with_p_with_oov = dict()
@@ -143,6 +159,11 @@ class Spell_Checker:
         return c_with_p_merge
 
     def tokens_to_text(self, tokens):
+        """
+
+        :param tokens: the tokens of the text
+        :return: str of the represention of the tokens
+        """
         text = ""
         for sent in tokens:
             text_sent = " ".join(sent) + ". "
@@ -229,6 +250,12 @@ class Spell_Checker:
             self.padding = True
 
         def get_tokens(self, text, chars=False):
+            """
+
+            :param text: str of text
+            :param chars: if to split to chars
+            :return: tokens represent the text
+            """
 
             sentences = text.split(".")  # split to Sentences
 
@@ -244,6 +271,13 @@ class Spell_Checker:
             return tokens
 
         def add_padding(self, tokens, before, after):
+            """
+            adding padding to the tokens
+            :param tokens:
+            :param before: how many before sentence
+            :param after: how many after sentence
+            :return: tokens with padding
+            """
             tokens_with_pad = [['<s>'] * before + sent + ['</s>'] * min(after, self.n - 1) for sent in tokens]
             return tokens_with_pad
 
@@ -380,6 +414,11 @@ class Spell_Checker:
             return result
 
         def tokens_to_text(self, tokens):
+            """
+
+            :param tokens: the tokens of the text
+            :return: str of the represention of the tokens
+            """
             text = ""
             for sent in tokens:
                 text_sent = " ".join(sent) + ". "
